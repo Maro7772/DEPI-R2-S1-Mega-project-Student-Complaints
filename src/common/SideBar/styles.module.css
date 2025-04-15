@@ -1,0 +1,54 @@
+.left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 200px;
+  background-color: #280559;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  color: #F2EFF5;
+}
+.left .menu {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.left .menu .menuText {
+  font-size: 10px;
+  font-weight: bold;
+}
+.menuIcon {
+  font-size: 25px;
+  cursor: pointer;
+}
+.menuItems .bullets{
+  display: flex;
+  gap: 5px;
+  color: #F2EFF5;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 5px 10px;
+  padding: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.menuItems .bullets:hover{
+  background-color: white;
+  color: #280559;
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+.menuItems .bullets .icon {
+  font-size: 18px;
+}

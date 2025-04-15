@@ -1,0 +1,27 @@
+.loginRegister {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+.login,
+.register {
+  padding: 10px;
+  border: 1px solid #280559;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+}
+.login:hover,
+.register:hover {
+  background-color: white;
+  color: #280559;
+  border-radius: 10px;
+  transition: all 0.3s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+}
