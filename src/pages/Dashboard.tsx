@@ -1,11 +1,12 @@
-import React from 'react'
+import Heading from '@common/Heading/Heading';
+
 
 const Dashboard = () => {
   return (
     <div>
-      
+      <Heading title='Dashboard' description='view Dashbord'></Heading>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
