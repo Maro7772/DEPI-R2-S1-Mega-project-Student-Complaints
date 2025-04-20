@@ -7,6 +7,10 @@
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   color: #F2EFF5;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  
 }
 .left .menu {
   padding: 10px;
