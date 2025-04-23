@@ -4,9 +4,11 @@ import { MainLayout } from "@layouts/index";
 import Dashboard from "@pages/Dashboard";
 import Complaints from "@pages/Complaints";
 import Settings from "@pages/Settings";
-import Login from "@pages/Login";
+import "@pages/Login";
 import Register from "@pages/Register";
 import Error from "@pages/Error";
+import Login from "@pages/Login";
+import ForgetPassword from "@/pages/ForgetPassword";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "register",
     Component: Register
+  },
+  {
+    path: "forgotpassword",
+    Component: ForgetPassword
   }
 ]);
 const AppRouter = () => {
