@@ -1,11 +1,12 @@
 import Heading from '@common/Heading/Heading';
+import { Container } from 'react-bootstrap';
 
 
 const Dashboard = () => {
   return (
-    <div>
+    <Container>
       <Heading title='Dashboard' description='view Dashbord'></Heading>
-    </div>
+    </Container>
   );
 };
 
