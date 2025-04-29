@@ -9,6 +9,8 @@ import Register from "@pages/Register";
 import Error from "@pages/Error";
 import Login from "@pages/Login";
 import ForgetPassword from "@/pages/ForgetPassword";
+import CodeVerification from "@/pages/CodeVerification";
+import ResetPassword from "@/pages/ResetPassword";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +47,16 @@ const router = createBrowserRouter([
   {
     path: "forgotpassword",
     Component: ForgetPassword
+  },
+  {
+    path: "CodeVerification",
+    Component: CodeVerification
+  },
+  {
+    path: "ResetPassword",
+    Component: ResetPassword
   }
+
 ]);
 const AppRouter = () => {
   return <RouterProvider router={router} />;

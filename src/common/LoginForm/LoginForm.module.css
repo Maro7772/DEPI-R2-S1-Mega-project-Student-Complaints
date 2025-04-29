@@ -1,27 +1,40 @@
-.container {
-    max-width: 450px;
-    margin: 50px auto;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    font-family: 'Arial', sans-serif;
-  }
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; 
+  overflow: hidden;
+}
 
-  .imageSection {
-    display: flex; /* Enable flexbox for layout */
-    flex-direction: row-reverse; /* Put image on the right */
-    align-items: center; /* Vertically align items */  
-    margin-bottom: 20px;
-  }
-  
-  .image {
-    flex: 0.6; /* Take 60% of the width */
-    padding-left: 40px; /* Add some spacing between image and form */
-    width: 100px;
-    height: auto;
-    display: block; /* Ensure the image is a block element */
-  }
+.container {
+  display: grid; 
+  grid-template-areas: "formSection imageSection";
+   grid-template-columns:1fr 1.5fr;
+   max-width: 1200px;      
+   margin: 50px auto;         
+   padding: 20px;            
+   border-radius: 12px;     
+}
+
+.formSection {
+  padding: 40px; 
+  border-radius: 8px 0 0 8px; 
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.imageSection {
+  display: flex;
+  background-color: #ffffff; 
+  border-radius: 0 8px 8px 0; 
+  overflow: hidden; 
+}
+
+.image {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover;
+}
   
   .header {
     text-align: left;
@@ -39,12 +52,7 @@
     color: #718096;
     font-size: 14px;
     margin: 0;
-  }
-/*   
-  .formGroup {
-    margin-bottom: 20px;
-  } */
-  
+  } 
   
   .options {
     display: flex;

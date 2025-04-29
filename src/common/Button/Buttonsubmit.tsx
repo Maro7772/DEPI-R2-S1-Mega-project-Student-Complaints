@@ -4,7 +4,6 @@ import styles from './Button.module.css';
 interface ButtonProps {
   type: "button" | "submit" | "reset";
   text: string;
-  children?:string
   onClick: () => void;
 }
 
