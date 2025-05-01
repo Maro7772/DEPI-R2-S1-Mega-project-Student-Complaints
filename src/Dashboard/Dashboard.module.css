@@ -1,0 +1,132 @@
+:root {
+  --bs-primary: #330e81; /* Override primary color */
+  --heading-primary: #4c2999;
+  --bg-primary: rgb(255, 255, 255);
+  --bg-secondary: rgb(61, 61, 61);
+
+  --font-size: 14px;
+  --font-weight-700: 700;
+  --font-weight-500: 500;
+  --border-radius: 20px;
+}
+body {
+  background-color: rgb(233, 233, 233);
+}
+
+.FirstRow,
+.SecondRow,
+.ThirdRow {
+  width: 96vw;
+  justify-content: space-between;
+}
+
+.FirstRow {
+  height: 15vh;
+}
+
+.item {
+  width: 18vw;
+  height: 15vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: var(--border-radius);
+}
+
+.CustomTitle {
+  color: rgba(165, 165, 165);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-500);
+}
+
+.CustomValue {
+  font-size: 2rem;
+  color: var(--heading-primary);
+  font-weight: var(--font-weight-500);
+}
+
+.SecondRow {
+  height: 25vh;
+}
+
+.status {
+  width: 23vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: black;
+  border-radius: var(--border-radius);
+}
+
+.ThirdRow {
+  height: 30vh;
+  background-color: transparent;
+}
+
+.report {
+  width: 47vw;
+  display: flex;
+  background-color: white;
+  color: black;
+  border-radius: var(--border-radius);
+}
+
+.TableTitle {
+  font-size: 1.4rem;
+  color: black;
+  font-weight: var(--font-weight-700);
+}
+
+.ViewAllBtn {
+  width: 7vw;
+  background-color: transparent;
+  color: var(--heading-primary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-500);
+  border: 2px solid var(--heading-primary);
+  border-radius: 10px;
+  transition: all 0.5s ease-in-out;
+}
+
+.ViewAllBtn:hover {
+  background-color: var(--heading-primary);
+  color: white;
+}
+
+.ViewAllBtn:active {
+  transform: scale(0.7);
+  background-color: var(--heading-primary);
+  transition: all 0.3s ease-in-out;
+}
+
+
+.RecName {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-500);
+  color: var(--bg-secondary);
+}
+
+.RecAmount {
+  font-size: 1.1rem;
+  font-weight: var(--font-weight-500);
+  color: var(--bg-secondary);
+}
+
+.RecStatus {
+  font-size: 0.9rem;
+  font-weight: var(--font-weight-500);
+  color: var(--bg-secondary);
+}
+
+.ViewBtn {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-700);
+  width: 5vw;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  color: var(--heading-primary);
+  border: 2px solid var(--heading-primary);
+}

@@ -1,42 +1,86 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+:root {
+  --bs-primary: #330e81; /* Override primary color */
+  --heading-primary: #4c2999;
+  --bg-primary: rgb(255, 255, 255);
+
+  --border-radius-primary: 20px;
+
+  --font-size: 14px;
+  --font-weight-700: 700;
+  --font-weight-500: 500;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  background-color: rgb(233, 233, 233);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.heading-custom {
+  color: var(--heading-primary);
+  font-weight: var(--font-weight-700);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.view-status-paragraph {
+  color: gray;
 }
 
-.card {
-  padding: 2em;
+.additional-information,
+.applications {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-primary);
 }
 
-.read-the-docs {
-  color: #888;
+.additional-paragraph {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-700);
+}
+
+.additional-text {
+  font-size: 1.3rem;
+  font-weight: var(--font-weight-500);
+}
+
+.applications-heading {
+  font-weight: var(--font-weight-500);
+}
+
+.search-application {
+  border-radius: var(--border-radius-primary);
+  background-color: rgb(241, 241, 241);
+}
+
+.filter-btn,
+.export-btn {
+  width: 6vw;
+  background-color: var(--bg-primary);
+  border: 0;
+  color: var(--bs-primary);
+  font-size: 1rem;
+  font-weight: var(--font-weight-500);
+}
+
+/* Use the custom primary color */
+.btn-custom {
+  width: 9vw;
+  background-color: var(--bs-primary);
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-500);
+  transition: 1s;
+  border: none;
+  padding: 1.2vh 0;
+}
+
+.btn-custom:hover {
+  background-color: var(--bs-primary);
+  cursor: pointer;
+  transform: scale(1.5);
+}
+
+.btn-custom:active {
+  background-color: var(--bs-primary);
+}
+
+
+.check-user {
+  display: inline;
+  border: 1px solid black;
 }

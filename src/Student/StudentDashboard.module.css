@@ -1,0 +1,61 @@
+:root {
+  --bs-primary: #330e81; /* Override primary color */
+  --heading-primary: #4c2999;
+  --bg-primary: rgb(255, 255, 255);
+  --bg-secondary: rgb(61, 61, 61);
+
+  --font-size: 14px;
+  --font-weight-700: 700;
+  --font-weight-500: 500;
+  --border-radius: 20px;
+}
+body {
+  background-color: rgb(233, 233, 233);
+}
+
+.Summary,
+.Indicators,
+.Applications {
+  width: 96vw;
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius);
+}
+
+.Summary {
+  height: 45vh;
+}
+
+.Img {
+  width: 30vw;
+  background-color: black;
+}
+
+.Info {
+  width: 60vw;
+}
+
+.Indicators {
+  height: 30vh;
+}
+
+.ColorQuestion {
+  width: 50vw;
+}
+
+.Applications {
+  height: 55vh;
+}
+
+.SearchInput {
+  width: 100%;
+  height: 10vh;
+  background-color: rgb(233, 233, 233);
+  border-radius: 10px;
+}
+
+input {
+  width: 80vw;
+  height: 5vh;
+  border-radius: 10px;
+  border: 0;
+}
