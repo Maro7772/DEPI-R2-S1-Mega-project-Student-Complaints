@@ -1,3 +1,7 @@
 import MainLayout from "./MainLayout/MainLayout";
+import ViewModal from "./ViewModal/ViewModal";
+import AddComplaint from "./AddComplaint/AddComplaint";
+import EditComplaint from "./EditComplaint/EditComplaint";
+import AddSolution from "./AddSolution/AddSolution";
 
-export { MainLayout };
+export { MainLayout, AddComplaint, ViewModal, EditComplaint, AddSolution };
