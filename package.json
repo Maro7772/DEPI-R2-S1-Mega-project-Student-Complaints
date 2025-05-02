@@ -1,13 +1,10 @@
 {
-  "homepage": "https://maro7772.github.io/DEPI-R2-S1-Mega-project-Student-Complaints/",
   "name": "student-complaints.json",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
