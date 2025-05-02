@@ -12,6 +12,7 @@ const AddComplaint = ({
   addNewComplaintHandler
 }: IAddComplaintProps) => {
   const [input, setInput] = useState<IComplaintProps>({
+    id: 0, // Default id value
     complaint: "",
     category: "",
     description: "",
@@ -32,12 +33,14 @@ const AddComplaint = ({
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     addNewComplaintHandler({
+      id: input.id,
       complaint: input.complaint,
       category: input.category,
       description: input.description,
       status: input.status
     });
     setInput({
+      id: 0,
       complaint: "",
       category: "",
       description: "",
@@ -67,6 +70,7 @@ const AddComplaint = ({
               id="complaint"
               placeholder="Complaint Name"
               autoFocus
+              required
               value={input.complaint}
               onChange={inputHandler}
             />
@@ -77,6 +81,7 @@ const AddComplaint = ({
               autoFocus
               id="category"
               value={input.category}
+              required
               onChange={selectHandler}
             >
               <option value="">Select Category</option>
@@ -90,6 +95,7 @@ const AddComplaint = ({
               as="textarea"
               id="description"
               rows={6}
+              required
               onChange={inputHandler}
               placeholder="Type your complaint"
               value={input.description}
