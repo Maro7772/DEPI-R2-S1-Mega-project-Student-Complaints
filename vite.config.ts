@@ -5,6 +5,5 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), svgr(), tsconfigPaths()],
-  base: "/DEPI-R2-S1-Mega-project-Student-Complaints"
+  plugins: [react(), svgr(), tsconfigPaths()]
 });
