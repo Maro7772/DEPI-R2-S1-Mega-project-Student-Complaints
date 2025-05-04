@@ -4,15 +4,16 @@ import { IComplaintProps } from "@/types/index";
 interface IAddComplaintProps {
   show: boolean;
   onHide: () => void;
-  addNewComplaintHandler: (data: IComplaintProps) => void;
+  addNewComplaintHandler: (
+    data: Omit<IComplaintProps, "id" | "solution">
+  ) => void;
 }
 const AddComplaint = ({
   show,
   onHide,
   addNewComplaintHandler
 }: IAddComplaintProps) => {
-  const [input, setInput] = useState<IComplaintProps>({
-    id: 0, // Default id value
+  const [input, setInput] = useState({
     complaint: "",
     category: "",
     description: "",
@@ -33,14 +34,12 @@ const AddComplaint = ({
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     addNewComplaintHandler({
-      id: input.id,
       complaint: input.complaint,
       category: input.category,
       description: input.description,
       status: input.status
     });
     setInput({
-      id: 0,
       complaint: "",
       category: "",
       description: "",
@@ -61,8 +60,8 @@ const AddComplaint = ({
           Add Complaint
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <Form onSubmit={onSubmitHandler}>
+      <Form onSubmit={onSubmitHandler}>
+        <Modal.Body>
           <Form.Group className="mb-3">
             <Form.Label>Complaint</Form.Label>
             <Form.Control
@@ -102,23 +101,23 @@ const AddComplaint = ({
               style={{ resize: "none" }}
             />
           </Form.Group>
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="submit"
-          onClick={onSubmitHandler}
-          style={{ backgroundColor: "#280559", border: "none" }}
-        >
-          Add
-        </Button>
-        <Button
-          onClick={onHide}
-          style={{ backgroundColor: "#280559", border: "none" }}
-        >
-          Close
-        </Button>
-      </Modal.Footer>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="submit"
+            style={{ backgroundColor: "#280559", border: "none" }}
+          >
+            Add
+          </Button>
+          <Button
+            type="button"
+            onClick={onHide}
+            style={{ backgroundColor: "#280559", border: "none" }}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Form>
     </Modal>
   );
 };

@@ -69,6 +69,7 @@ const EditComplaint = ({
               id="complaint"
               placeholder="Complaint Name"
               autoFocus
+              required
               onChange={inputHandler}
               value={input.complaint}
             />
@@ -77,6 +78,7 @@ const EditComplaint = ({
             <Form.Label>Category</Form.Label>
             <Form.Select
               id="category"
+              required
               onChange={selectHandler}
               value={input.category}
             >
@@ -91,6 +93,7 @@ const EditComplaint = ({
               as="textarea"
               id="description"
               rows={6}
+              required
               onChange={inputHandler}
               placeholder="Type your complaint"
               value={input.description}
