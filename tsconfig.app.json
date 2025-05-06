@@ -14,7 +14,25 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
+    /* Absolute imports */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@common/*": ["src/common/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@pages/*": ["src/pages/*"],
+      "@utils/*": ["src/utils/*"],
+      "@styles/*": ["src/styles/*"],
+      "@store/*": ["src/store/*"],
+      "@types/*": ["src/types/*"],
+      "@services/*": ["src/services/*"],
+      "@routes/*": ["src/routes/*"],
+      "@context/*": ["src/context/*"],
+      "@api/*": ["src/api/*"],
+    },
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

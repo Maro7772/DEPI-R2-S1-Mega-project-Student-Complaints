@@ -1,11 +1,6 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import StudentDashboard from "./Student/StudentDashboard";
-import Dashboard from "./Dashboard/Dashboard";
+import AppRouter from "@routes/AppRouter";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@styles/global.css";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Dashboard/>
-  </StrictMode>
-);
+createRoot(document.getElementById("root")!).render(<AppRouter />);
