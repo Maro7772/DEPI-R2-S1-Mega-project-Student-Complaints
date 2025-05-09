@@ -14,7 +14,7 @@ const AddComplaint = ({
   addNewComplaintHandler
 }: IAddComplaintProps) => {
   const [input, setInput] = useState({
-    complaint: "",
+    name: "",
     category: "",
     description: "",
     status: "Pending"
@@ -34,13 +34,13 @@ const AddComplaint = ({
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     addNewComplaintHandler({
-      complaint: input.complaint,
+      name: input.name,
       category: input.category,
       description: input.description,
       status: input.status
     });
     setInput({
-      complaint: "",
+      name: "",
       category: "",
       description: "",
       status: "Pending"
@@ -63,14 +63,14 @@ const AddComplaint = ({
       <Form onSubmit={onSubmitHandler}>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Complaint</Form.Label>
+            <Form.Label>Student Name</Form.Label>
             <Form.Control
               type="text"
-              id="complaint"
-              placeholder="Complaint Name"
+              id="name"
+              placeholder="Student Name"
               autoFocus
               required
-              value={input.complaint}
+              value={input.name}
               onChange={inputHandler}
             />
           </Form.Group>

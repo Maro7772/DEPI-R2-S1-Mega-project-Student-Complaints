@@ -17,8 +17,8 @@ const ViewModal = ({ ...props }) => {
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3" controlId="complaint">
-            <Form.Label>Complaint</Form.Label>
-            <Form.Control type="text" value={props.complaint} disabled />
+            <Form.Label>StudentName</Form.Label>
+            <Form.Control type="text" value={props.name} disabled />
           </Form.Group>
           <Form.Group className="mb-3" controlId="category">
             <Form.Label>Category</Form.Label>

@@ -1,11 +1,14 @@
 import { HeadBar, Heading } from "@common/index";
+import { AddComplaint, ViewModal, EditComplaint } from "@layouts/index";
+import { useState, useEffect } from "react";
 import {
-  AddComplaint,
-  ViewModal,
-  EditComplaint,
-  AddSolution
-} from "@layouts/index";
-import { useState } from "react";
+  fetchComplaints,
+  updateComplaint,
+  deleteComplaint,
+  addComplaint
+} from "@/store/complaints/complaintsSlice"; // Adjust the path as needed
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { IComplaintProps } from "@/types/index";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,174 +17,67 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Complaints = () => {
-  const [programsData, setProgramsData] = useState([
-    {
-      id: 1,
-      complaint: "Accounting",
-      category: "Academic",
-      description: "Bachelor's degrees",
-      status: "Pending",
-      solution: ""
-    },
-    {
-      id: 2,
-      complaint: "Anthropology & Linguistics",
-      category: "Non-Academic",
-      description: "Master's Degree",
-      status: "Resolved",
-      solution: ""
-    },
-    {
-      id: 3,
-      complaint: "Biomedical Engineering",
-      category: "Academic",
-      description: "Bachelor's Degree",
-      status: "Pending",
-      solution: ""
-    },
-    {
-      id: 4,
-      complaint: "Business Studies",
-      category: "Academic",
-      description: "Master's Degree",
-      status: "Pending",
-      solution: ""
-    },
-    {
-      id: 5,
-      complaint: "Cardiothoracic Surgery",
-      category: "Academic",
-      description: "Master's Degree",
-      status: "Resolved",
-      solution: ""
-    },
-    {
-      id: 6,
-      complaint: "Central & East Asian Art & Archaeology",
-      category: "Non-Academic",
-      description: "Bachelor's degrees",
-      status: "Rejected",
-      solution: ""
-    },
-    {
-      id: 7,
-      complaint: "Dental Surgery",
-      category: "Academic",
-      description: "Bachelor's degrees",
-      status: "Pending",
-      solution: ""
-    }
-  ]);
+  const dispatch = useAppDispatch();
+  const { complaints, loading, error } = useAppSelector(
+    (state) => state.complaints
+  );
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showSolutionModal, setShowSolutionModal] = useState(false);
   const [
-    selectedComplaintForSolution,
-    setSelectedComplaintForSolution
-  ] = useState<{
-    id: number;
-    complaint: string;
-    category: string;
-    description: string;
-    status: string;
-    solution?: string;
-  } | null>(null);
-
-  const [selectedComplaint, setSelectedComplaint] = useState<{
-    complaint: string;
-    category: string;
-    description: string;
-    solution?: string;
-  }>({
-    complaint: "",
-    category: "",
-    description: "",
-    solution: ""
-  });
-
-  const [selectedComplaintToEdit, setSelectedComplaintToEdit] = useState<{
-    id: number;
-    complaint: string;
-    category: string;
-    description: string;
-    status: string;
-  } | null>(null);
+    selectedComplaint,
+    setSelectedComplaint
+  ] = useState<IComplaintProps | null>(null);
+  const [
+    selectedComplaintToEdit,
+    setSelectedComplaintToEdit
+  ] = useState<IComplaintProps | null>(null);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredPrograms = programsData.filter((program) =>
-    program.complaint.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPrograms = complaints.filter((program) =>
+    (program.name ?? "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const addNewComplaintHandler = (data: {
-    complaint: string;
+    name?: string;
     category: string;
     description: string;
     status: string;
   }) => {
-    const newComplaint = { id: Date.now(), ...data, solution: "" };
-    setProgramsData((prevData) => [...prevData, newComplaint]);
+    const newComplaint = {
+      name: data.name || "Unknown",
+      ...data,
+      solution: ""
+    };
+    dispatch(addComplaint(newComplaint));
     setShowAddModal(false);
   };
 
-  const editComplaintHandler = (updatedComplaint: {
-    id: number;
-    complaint: string;
-    category: string;
-    description: string;
-    status: string;
-  }) => {
-    setProgramsData((prevData) =>
-      prevData.map((complaint) =>
-        complaint.id === updatedComplaint.id
-          ? { ...updatedComplaint, solution: complaint.solution }
-          : complaint
-      )
-    );
+  const editComplaintHandler = (updatedComplaint: IComplaintProps) => {
+    dispatch(updateComplaint(updatedComplaint));
     setShowEditModal(false);
   };
 
-  const deleteComplaintHandler = (id: number) => {
-    setProgramsData((prevData) =>
-      prevData.filter((complaint) => complaint.id !== id)
-    );
+  const deleteComplaintHandler = (id: string) => {
+    dispatch(deleteComplaint(id));
   };
-  const handleSolutionSubmit = (solution: string) => {
-    setProgramsData((prevData) =>
-      prevData.map((item) =>
-        selectedComplaintForSolution &&
-        item.id === selectedComplaintForSolution.id
-          ? { ...item, solution, status: "Resolved" }
-          : item
-      )
-    );
-    setShowSolutionModal(false);
-  };
-  const handleRejectComplaint = () => {
-    setProgramsData((prevData) =>
-      prevData.map((item) =>
-        selectedComplaintForSolution &&
-        item.id === selectedComplaintForSolution.id
-          ? { ...item, status: "Rejected" } // Set status to "Rejected"
-          : item
-      )
-    );
-    setShowSolutionModal(false);
-  };
-
   const addButton = <FontAwesomeIcon icon={faCirclePlus} className="px-2" />;
+
+  useEffect(() => {
+    dispatch(fetchComplaints());
+  }, [dispatch]);
 
   return (
     <>
       <ViewModal
         show={showViewModal}
         onHide={() => setShowViewModal(false)}
-        complaint={selectedComplaint.complaint}
-        category={selectedComplaint.category}
-        description={selectedComplaint.description}
-        solution={selectedComplaint.solution}
+        name={selectedComplaint?.name}
+        category={selectedComplaint?.category}
+        description={selectedComplaint?.description}
+        solution={selectedComplaint?.solution}
       />
 
       {selectedComplaintToEdit && (
@@ -197,20 +93,6 @@ const Complaints = () => {
         show={showAddModal}
         onHide={() => setShowAddModal(false)}
         addNewComplaintHandler={addNewComplaintHandler}
-      />
-      <AddSolution
-        show={showSolutionModal}
-        onReject={handleRejectComplaint}
-        onHide={() => setShowSolutionModal(false)}
-        complaint={
-          selectedComplaintForSolution
-            ? {
-                complaint: selectedComplaintForSolution.complaint,
-                description: selectedComplaintForSolution.description
-              }
-            : undefined
-        }
-        onSubmit={handleSolutionSubmit}
       />
 
       <Container>
@@ -255,114 +137,121 @@ const Complaints = () => {
           </div>
 
           <div className="my-5 mx-3">
-            <Table className="text-center" responsive>
-              <thead>
-                <tr>
-                  <th>
-                    <p>Name</p>
-                  </th>
-                  <th>
-                    <p>Category</p>
-                  </th>
-                  <th>
-                    <p>Description</p>
-                  </th>
-                  <th>
-                    <p>Status</p>
-                  </th>
-                  <th>
-                    <p>Action</p>
-                  </th>
-                  <th>
-                    <p>Option</p>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredPrograms.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.complaint}</td>
-                    <td>{item.category}</td>
-                    <td
-                      style={{
-                        maxWidth: "100px",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis"
-                      }}
-                    >
-                      {item.description}
-                    </td>
-                    <td>{item.status}</td>
-                    <td>
-                      <Button
-                        variant="outline-dark"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedComplaint({
-                            complaint: item.complaint,
-                            category: item.category,
-                            description: item.description,
-                            solution: item.solution
-                          });
-                          setShowViewModal(true);
+            {loading === "pending" && <p>Loading...</p>}
+            {error ? (
+              <p className="text-danger">{error}</p>
+            ) : (
+              <Table className="text-center" responsive>
+                <thead>
+                  <tr>
+                    <th>
+                      <p>Student Name</p>
+                    </th>
+                    <th>
+                      <p>Category</p>
+                    </th>
+                    <th>
+                      <p>Description</p>
+                    </th>
+                    <th>
+                      <p>Status</p>
+                    </th>
+                    <th>
+                      <p>Action</p>
+                    </th>
+                    <th>
+                      <p>Option</p>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPrograms.map((item) => (
+                    <tr key={item._id}>
+                      <td>{item.name}</td>
+                      <td>{item.category}</td>
+                      <td
+                        style={{
+                          maxWidth: "100px",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis"
                         }}
                       >
-                        View
-                      </Button>
-                    </td>
-                    <td>
-                      <div className="d-flex gap-2 justify-content-evenly">
+                        {item.description}
+                      </td>
+                      <td>{item.status}</td>
+                      <td>
                         <Button
-                          variant="outline-success"
+                          variant="outline-dark"
                           size="sm"
                           onClick={() => {
-                            setSelectedComplaintForSolution(item);
-                            setShowSolutionModal(true);
-                          }}
-                        >
-                          Add Solution
-                        </Button>
-                        <Button
-                          variant="outline-secondary"
-                          size="sm"
-                          onClick={() => {
-                            setSelectedComplaintToEdit({
-                              id: item.id,
-                              complaint: item.complaint,
+                            setSelectedComplaint({
+                              _id: item._id,
+                              name: item.name,
                               category: item.category,
                               description: item.description,
+                              solution: item.solution,
                               status: item.status
                             });
-                            setShowEditModal(true);
+                            setShowViewModal(true);
                           }}
                         >
-                          Edit
+                          View
                         </Button>
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                `Are you sure you want to delete ${item.complaint} complaint?`
-                              )
-                            ) {
-                              deleteComplaintHandler(item.id);
-                            }
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+                      </td>
+                      <td>
+                        <div className="d-flex gap-2 justify-content-evenly">
+                          {/* <Button
+                            variant="outline-success"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedComplaintForSolution(item);
+                              setShowSolutionModal(true);
+                            }}
+                          >
+                            Add Solution
+                          </Button> */}
+                          <Button
+                            variant="outline-secondary"
+                            size="sm"
+                            onClick={() => {
+                              setSelectedComplaintToEdit({
+                                _id: item._id,
+                                name: item.name,
+                                category: item.category,
+                                description: item.description,
+                                status: item.status
+                              });
+                              setShowEditModal(true);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  `Are you sure you want to delete ${item.name} complaint?`
+                                )
+                              ) {
+                                deleteComplaintHandler(item._id);
+                              }
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
             <div className="d-flex justify-content-between align-items-center">
               <small className="text-muted">
-                1 - {filteredPrograms.length} of {programsData.length}
+                1 - {filteredPrograms.length} of {complaints.length}
               </small>
             </div>
           </div>
@@ -371,5 +260,4 @@ const Complaints = () => {
     </>
   );
 };
-
 export default Complaints;

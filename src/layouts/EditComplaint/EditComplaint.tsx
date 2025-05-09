@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Button, Form, Modal } from "react-bootstrap";
 import { IComplaintProps } from "@/types/index";
 
@@ -16,8 +17,8 @@ const EditComplaint = ({
   editComplaintHandler
 }: IEditComplaintProps) => {
   const [input, setInput] = useState<IComplaintProps>({
-    id: 0,
-    complaint: "",
+    _id: "",
+    name: "",
     category: "",
     description: "",
     status: "Pending"
@@ -29,7 +30,9 @@ const EditComplaint = ({
     }
   }, [existingComplaint]);
 
-  const inputHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const inputHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const key = e.target.id;
     const value = e.target.value;
     setInput((prevState) => ({ ...prevState, [key]: value }));
@@ -63,15 +66,15 @@ const EditComplaint = ({
         </Modal.Header>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Complaint</Form.Label>
+            <Form.Label>Student Name</Form.Label>
             <Form.Control
               type="text"
-              id="complaint"
-              placeholder="Complaint Name"
+              id="name"
+              placeholder="Student Name"
               autoFocus
               required
               onChange={inputHandler}
-              value={input.complaint}
+              value={input.name}
             />
           </Form.Group>
           <Form.Group className="mb-3">

@@ -1,6 +1,7 @@
 export default interface IComplaintProps {
-  id: number;
-  complaint: string;
+  _id: string;
+  name: string;
+  student?: object;
   category: string;
   description: string;
   status: string;
