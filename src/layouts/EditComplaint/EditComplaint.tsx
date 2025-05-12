@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Button, Form, Modal } from "react-bootstrap";
 import { IComplaintProps } from "@/types/index";
 
