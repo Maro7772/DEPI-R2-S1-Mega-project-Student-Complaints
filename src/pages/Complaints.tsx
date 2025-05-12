@@ -1,13 +1,13 @@
 import HeadBar from "@common/Headbar/HeadBar";
 import Heading from "@common/Heading/Heading";
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Table,
   Button,
   Form,
   InputGroup,
   Pagination,
-  Dropdown
+  Dropdown,
 } from "react-bootstrap";
 
 const programsData = [
@@ -45,15 +45,23 @@ const programsData = [
 ];
 
 const Complaints = () => {
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredPrograms = programsData.filter((program) =>
     program.program.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    );
+
+
   return (
     <div>
       <Heading title="Complaints" description="view all Complaints" />
-      <HeadBar title="Complaints" />
+      <HeadBar titles={["Complaints"]} />
+
+
+
+
+
       <div className="container py-4">
         <InputGroup className="mb-3">
           <Form.Control
