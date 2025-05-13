@@ -20,6 +20,9 @@ const Link: React.FC<LinkProps> = ({ text }) => {
     } else if (text.toLowerCase().includes('forgot password?')) {
       navigate('/forgotpassword');
     }
+    else if (text.toLowerCase().includes('login')) {
+      navigate('/Login');
+    }
   };
 
   return (

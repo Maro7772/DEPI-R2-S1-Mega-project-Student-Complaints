@@ -1,90 +1,105 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /* overflow: hidden; */
+}
+
 .container {
-    max-width: 450px;
-    margin: 50px auto;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
-    font-family: 'Arial', sans-serif;
-  }
+  display: grid;
+  grid-template-areas: "formSection imageSection";
+  grid-template-columns: 1fr 2fr;
+  max-width: 1300px;
+  margin: 50px auto;
+  border-radius: 12px;
+}
 
-  .imageSection {
-    display: flex; /* Enable flexbox for layout */
-    flex-direction: row-reverse; /* Put image on the right */
-    align-items: center; /* Vertically align items */  
-    margin-bottom: 20px;
-  }
-  
-  .image {
-    flex: 0.6; /* Take 60% of the width */
-    padding-left: 40px; /* Add some spacing between image and form */
-    width: 100px;
-    height: auto;
-    display: block; /* Ensure the image is a block element */
-  }
-  
-  .header {
-    text-align: left;
-    margin-bottom: 30px;
-  }
-  
-  .title {
-    color: #2d3748;
-    font-size: 32px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  
-  .subtitle {
-    color: #718096;
-    font-size: 14px;
-    margin: 0;
-  }
-/*   
-  .formGroup {
-    margin-bottom: 20px;
-  } */
-  
-  
-  .options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 0;
-  }
-  
-  .checkboxLabel {
-    display: flex;
-    align-items: center;
-  }
-  
-  .remember-checkbox {
-    margin-right: 8px;
-    accent-color: #4299e1;
-  }
-  
-  .checkbox-label {
-    color: #4a5568;
-    font-size: 14px;
-  }
-  
-  .forgotLink {
-    color: #4299e1;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  
-  .signupText {
-    display:flex; 
-    justify-content: center;
-    margin-top: 18px;
-    color: rgba(0, 0, 0, 0.81)6;
-    font-size: 14px;
-  }
+.formSection {
+  padding: 40px;
+  border-radius: 8px 0 0 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
 
-  .signuplink {
-    color : #361f55
-  }
-  
+.selectInput {
+  width: 100%;
+  height: 40px;
+  padding: 0 16px;
+  margin: 4px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.imageSection {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.title {
+  color: #2d3748;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #718096;
+  font-size: 14px;
+  margin: 0;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+}
+
+.remember-checkbox {
+  margin-right: 8px;
+  accent-color: #4299e1;
+}
+
+.checkbox-label {
+  color: #4a5568;
+  font-size: 14px;
+}
+
+.forgotLink {
+  color: #4299e1;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+.signupText {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+  color: rgba(0, 0, 0, 0.81)6;
+  font-size: 14px;
+}
+
+.signuplink {
+  color: #361f55
+}
