@@ -1,12 +1,17 @@
 import { HeadBar, Heading } from "@common/index";
-import { AddComplaint, ViewModal, EditComplaint } from "@layouts/index";
+import {
+  AddComplaint,
+  ViewModal,
+  EditComplaint,
+  AddSolution
+} from "@layouts/index";
 import { useState, useEffect } from "react";
 import {
   fetchComplaints,
   updateComplaint,
   deleteComplaint,
   addComplaint
-} from "@/store/complaints/complaintsSlice"; // Adjust the path as needed
+} from "@/store/complaints/complaintsSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { IComplaintProps } from "@/types/index";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
@@ -15,16 +20,25 @@ import {
   faMagnifyingGlass,
   faCirclePlus
 } from "@fortawesome/free-solid-svg-icons";
+// import { Navigate } from "react-router-dom";
 
 const Complaints = () => {
   const dispatch = useAppDispatch();
   const { complaints, loading, error } = useAppSelector(
     (state) => state.complaints
   );
+  const { fullName, role } = useAppSelector((state) => state.user);
+
+  console.log(fullName, role);
+  // if (role === null) {
+  //   return <Navigate to="/Login" />;
+  // }
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddSolutionModal, setShowAddSolutionModal] = useState(false);
+
   const [
     selectedComplaint,
     setSelectedComplaint
@@ -33,12 +47,24 @@ const Complaints = () => {
     selectedComplaintToEdit,
     setSelectedComplaintToEdit
   ] = useState<IComplaintProps | null>(null);
+  const [
+    selectedComplaintToResolve,
+    setSelectedComplaintToResolve
+  ] = useState<IComplaintProps | null>(null);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredPrograms = complaints.filter((program) =>
-    (program.name ?? "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredComplaints = complaints.filter((complaint) => {
+    const matchesSearch = (complaint.name ?? "")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+
+    if (role === "student") {
+      return complaint.name === fullName && matchesSearch;
+    }
+
+    return matchesSearch;
+  });
 
   const addNewComplaintHandler = (data: {
     name?: string;
@@ -47,7 +73,7 @@ const Complaints = () => {
     status: string;
   }) => {
     const newComplaint = {
-      name: data.name || "Unknown",
+      name: fullName || "Unknown",
       ...data,
       solution: ""
     };
@@ -63,6 +89,33 @@ const Complaints = () => {
   const deleteComplaintHandler = (id: string) => {
     dispatch(deleteComplaint(id));
   };
+
+  const submitSolutionHandler = (solution: string) => {
+    if (!selectedComplaintToResolve) return;
+
+    const updatedComplaint = {
+      ...selectedComplaintToResolve,
+      solution,
+      status: "resolved"
+    };
+
+    dispatch(updateComplaint(updatedComplaint));
+    setShowAddSolutionModal(false);
+  };
+
+  const rejectComplaintHandler = () => {
+    if (!selectedComplaintToResolve) return;
+
+    const updatedComplaint = {
+      ...selectedComplaintToResolve,
+      solution: "",
+      status: "rejected"
+    };
+
+    dispatch(updateComplaint(updatedComplaint));
+    setShowAddSolutionModal(false);
+  };
+
   const addButton = <FontAwesomeIcon icon={faCirclePlus} className="px-2" />;
 
   useEffect(() => {
@@ -95,6 +148,19 @@ const Complaints = () => {
         addNewComplaintHandler={addNewComplaintHandler}
       />
 
+      {selectedComplaintToResolve && (
+        <AddSolution
+          show={showAddSolutionModal}
+          onHide={() => setShowAddSolutionModal(false)}
+          onSubmit={submitSolutionHandler}
+          onReject={rejectComplaintHandler}
+          complaint={{
+            complaint: selectedComplaintToResolve.category,
+            description: selectedComplaintToResolve.description
+          }}
+        />
+      )}
+
       <Container>
         <Heading title="Complaints" description="View Complaints" />
         <HeadBar title="Complaints" select={true} />
@@ -102,18 +168,23 @@ const Complaints = () => {
         <Container className="applications d-flex flex-column mb-4">
           <Row className="justify-content-between align-items-center w-100 px-3 py-4">
             <Col xs={8}>
-              <h3 className="applications-heading">Your Complaints</h3>
+              <h3 className="applications-heading">
+                {role === "admin" ? "All Complaints" : "Your Complaints"}
+              </h3>
             </Col>
-            <Col xs="auto">
-              <Button
-                className="btn-custom"
-                style={{ border: "none", backgroundColor: "#280559" }}
-                onClick={() => setShowAddModal(true)}
-              >
-                {addButton}
-                <span className="px-2">Add New Complaint</span>
-              </Button>
-            </Col>
+
+            {role === "student" && (
+              <Col xs="auto">
+                <Button
+                  className="btn-custom"
+                  style={{ border: "none", backgroundColor: "#280559" }}
+                  onClick={() => setShowAddModal(true)}
+                >
+                  {addButton}
+                  <span className="px-2">Add New Complaint</span>
+                </Button>
+              </Col>
+            )}
           </Row>
 
           <div className="d-flex align-items-center gap-3 p-4 mx-3 search-application">
@@ -165,7 +236,7 @@ const Complaints = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredPrograms.map((item) => (
+                  {filteredComplaints.map((item) => (
                     <tr key={item._id}>
                       <td>{item.name}</td>
                       <td>{item.category}</td>
@@ -185,14 +256,8 @@ const Complaints = () => {
                           variant="outline-dark"
                           size="sm"
                           onClick={() => {
-                            setSelectedComplaint({
-                              _id: item._id,
-                              name: item.name,
-                              category: item.category,
-                              description: item.description,
-                              solution: item.solution,
-                              status: item.status
-                            });
+                            console.log(item.solution);
+                            setSelectedComplaint(item);
                             setShowViewModal(true);
                           }}
                         >
@@ -201,47 +266,46 @@ const Complaints = () => {
                       </td>
                       <td>
                         <div className="d-flex gap-2 justify-content-evenly">
-                          {/* <Button
-                            variant="outline-success"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedComplaintForSolution(item);
-                              setShowSolutionModal(true);
-                            }}
-                          >
-                            Add Solution
-                          </Button> */}
-                          <Button
-                            variant="outline-secondary"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedComplaintToEdit({
-                                _id: item._id,
-                                name: item.name,
-                                category: item.category,
-                                description: item.description,
-                                status: item.status
-                              });
-                              setShowEditModal(true);
-                            }}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="outline-danger"
-                            size="sm"
-                            onClick={() => {
-                              if (
-                                window.confirm(
-                                  `Are you sure you want to delete ${item.name} complaint?`
-                                )
-                              ) {
-                                deleteComplaintHandler(item._id);
-                              }
-                            }}
-                          >
-                            Delete
-                          </Button>
+                          {role === "admin" ? (
+                            <Button
+                              variant="outline-success"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedComplaintToResolve(item);
+                                setShowAddSolutionModal(true);
+                              }}
+                            >
+                              Add Solution
+                            </Button>
+                          ) : (
+                            <>
+                              <Button
+                                variant="outline-secondary"
+                                size="sm"
+                                onClick={() => {
+                                  setSelectedComplaintToEdit(item);
+                                  setShowEditModal(true);
+                                }}
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                variant="outline-danger"
+                                size="sm"
+                                onClick={() => {
+                                  if (
+                                    window.confirm(
+                                      `Are you sure you want to delete ${item.name} complaint?`
+                                    )
+                                  ) {
+                                    deleteComplaintHandler(item._id);
+                                  }
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -251,7 +315,7 @@ const Complaints = () => {
             )}
             <div className="d-flex justify-content-between align-items-center">
               <small className="text-muted">
-                1 - {filteredPrograms.length} of {complaints.length}
+                1 - {filteredComplaints.length} of {complaints.length}
               </small>
             </div>
           </div>
@@ -260,4 +324,5 @@ const Complaints = () => {
     </>
   );
 };
+
 export default Complaints;

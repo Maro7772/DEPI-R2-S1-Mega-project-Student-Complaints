@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { IComplaintProps } from "@/types/index";
+import { useAppSelector } from "@/store/hooks";
 interface IAddComplaintProps {
   show: boolean;
   onHide: () => void;
@@ -13,8 +14,9 @@ const AddComplaint = ({
   onHide,
   addNewComplaintHandler
 }: IAddComplaintProps) => {
+  const { fullName } = useAppSelector((state) => state.user);
   const [input, setInput] = useState({
-    name: "",
+    name: fullName || "",
     category: "",
     description: "",
     status: "Pending"
@@ -40,7 +42,7 @@ const AddComplaint = ({
       status: input.status
     });
     setInput({
-      name: "",
+      name: fullName || "",
       category: "",
       description: "",
       status: "Pending"
@@ -71,7 +73,6 @@ const AddComplaint = ({
               autoFocus
               required
               value={input.name}
-              onChange={inputHandler}
             />
           </Form.Group>
           <Form.Group className="mb-3">
