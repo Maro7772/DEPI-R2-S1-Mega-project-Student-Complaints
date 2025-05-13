@@ -44,12 +44,14 @@ function Register() {
 
       const { user, accessToken } = res.data;
 
-      dispatch(setUser({
-        id: user.id,
-        fullName: user.fullName,
-        email: user.email,
-        role: user.role,
-      }));
+      if (user && accessToken) {
+        dispatch(setUser({
+          id: user.id,  
+          fullName: user.fullName,
+          email: user.email,
+          role: user.role,
+        }));
+      }
 
 
       localStorage.setItem('token', accessToken);
@@ -57,96 +59,96 @@ function Register() {
 
       navigate('/complaints');
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration failed');
 
     };
 
   }
-    return (
-      <div className={styles.container}>
+  return (
+    <div className={styles.container}>
 
-        <div className={styles.formSection}>
+      <div className={styles.formSection}>
 
-          <div className={styles.header}>
-            <h1 className={styles.title}>Registeration</h1>
-            <p className={styles.subtitle}>Please fill your detail to create your account.</p>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Registeration</h1>
+          <p className={styles.subtitle}>Please fill your detail to create your account.</p>
+        </div>
+
+
+        {/* *****************   form on submit   ********************* */}
+        <form onSubmit={handleSubmitRegister}>
+          <div className={styles.formGroup}>
+
+            <FormInput
+              label='fullName'
+              type="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Omaryassereldeeb"
+              icon={<FaTimesCircle />}
+            />
+
+            <FormInput
+              label='Email'
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="youremail@example.com"
+              icon={<FaEnvelope />}
+            />
+
+            <FormInput
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="*********"
+            />
+
+            <FormInput
+              label="Confirm Password"
+              type="password"
+              value={confirmpassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="*********"
+            />
+
+
+            <label htmlFor="userType">Role</label>
+            <select
+              id="userType"
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              className={styles.selectInput}
+            >
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div className={styles.options}>
+            <Checkbox
+              label="Remember Me"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+            />
           </div>
 
+          <Button type="submit" text={'create an account'}></Button>
 
-          {/* *****************   form on submit   ********************* */}
-          <form onSubmit={handleSubmitRegister}>
-            <div className={styles.formGroup}>
-
-              <FormInput
-                label='fullName'
-                type="text"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Omaryassereldeeb"
-                icon={<FaTimesCircle />}
-              />
-
-              <FormInput
-                label='Email'
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="youremail@example.com"
-                icon={<FaEnvelope />}
-              />
-
-              <FormInput
-                label="Password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="*********"
-              />
-
-              <FormInput
-                label="Confirm Password"
-                type="password"
-                value={confirmpassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="*********"
-              />
-
-
-              <label htmlFor="userType">Role</label>
-              <select
-                id="userType"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-                className={styles.selectInput}
-              >
-                <option value="student">Student</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            <div className={styles.options}>
-              <Checkbox
-                label="Remember Me"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-              />
-            </div>
-
-            <Button type="submit" text={'create an account'}></Button>
-
-            <div className={styles.signupText}>
-              <p> Have an account ?</p> <Link className={styles.signuplink} text={'login'}> </Link>
-            </div>
-          </form>
-        </div>
-
-        <div className={styles.imageSection}>
-          <img src="/image.png" alt="LogIn logo" className={styles.image} />
-        </div>
-
+          <div className={styles.signupText}>
+            <p> Have an account ?</p> <Link className={styles.signuplink} text={'login'}> </Link>
+          </div>
+        </form>
       </div>
-    );
-  }
+
+      <div className={styles.imageSection}>
+        <img src="/image.png" alt="LogIn logo" className={styles.image} />
+      </div>
+
+    </div>
+  );
+}
 
 
 export default Register;

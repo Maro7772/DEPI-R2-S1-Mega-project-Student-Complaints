@@ -1,7 +1,7 @@
 import axios from '@/services/axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import styles from '../common/LoginForm/LoginForm.module.css';
+import styles from '../common/LoginForm/PasswordStyles.module.css';
 import FormInput from '@/common/FormInput/FormInput';
 import { FaEnvelope } from 'react-icons/fa';
 import Button from '@/common/Button/Buttonsubmit';
