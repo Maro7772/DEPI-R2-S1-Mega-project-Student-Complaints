@@ -20,11 +20,7 @@ const initialUsers = [
 
 // functional component
 const Settings = () => {
-  return (
-    <Container>
-      <Heading title="Settings" description="view Settings" />
-    </Container>
-  );
+ 
 //create new array (users) to edit on (initialUsers) using (useState) function
 const [users, setUsers] = useState(initialUsers);
 
@@ -129,7 +125,7 @@ const handleAddUser = () => {
   return (
     <Container className="applications d-flex flex-column">
       <Heading title="Settings" description="View all Settings" />
-       <HeadBar title={"Users"} select={false}/>
+       <HeadBar title={"Users"} select={true}/>
 
       <div className="container py-2 px-2">
         {/* search input and add user button */}
