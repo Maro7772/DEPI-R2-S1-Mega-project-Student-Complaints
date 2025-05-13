@@ -1,4 +1,5 @@
 
+
 // all imports i need
 import HeadBar from "@/common/Headbar/HeadBar";
 import Heading from "@/common/Heading/Heading";
@@ -6,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Button, Table, Col, Container, Modal, Form } from "react-bootstrap";
+
 
 // Users Data for table without any changes
 const initialUsers = [
@@ -18,17 +20,20 @@ const initialUsers = [
   { id: 7, name: "Laura Martinez", email: "laura.martinez@example.com", role: "User", }
 ];
 
+
 // functional component
 const Settings = () => {
  
 //create new array (users) to edit on (initialUsers) using (useState) function
 const [users, setUsers] = useState(initialUsers);
 
+
 //for serch input
 const [searchTerm, setSearchTerm] = useState("");
 const filteredUsers = users.filter((user) =>
   user.name.toLowerCase().includes(searchTerm.toLowerCase())
 );
+
 
 //----------------------------------------------------------------
 // hide and show the add the (add new user) window
@@ -40,6 +45,7 @@ const [newUser, setNewUser] = useState({
   role: "",
 });
 
+
 // update the new user value through writing
 // e => the event that happend when the user write
 const handleNewUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +56,7 @@ const handleNewUserChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     [e.target.name]: e.target.value
   });
 };
+
 
 // add the new user in the array
 const handleAddUser = () => {
@@ -71,6 +78,7 @@ const handleAddUser = () => {
   // to show/hide edit modal
   const [showEditModal, setShowEditModal] = useState(false);
 
+
   //When we write something new in the edit form, we use setCurrentUser() to update the values.
   const [currentUser, setCurrentUser] = useState({
     id: 0,
@@ -78,6 +86,7 @@ const handleAddUser = () => {
     email: "",
     role: "",
   });
+
 
   // update the current user value through writing
   // e => the event that happend when the user write
@@ -88,18 +97,21 @@ const handleAddUser = () => {
     });
   };
 
+
   const handleEdit = (user: typeof initialUsers[0]) => {
-    // currentUser بنحط بيانات اليوزر الي ضغطنا عليه في ال 
+    // currentUser بنحط بيانات اليوزر الي ضغطنا عليه في ال
     setCurrentUser(user);
     //open the model window
     setShowEditModal(true);
   };
 
 
+
+
   const handleUpdateUser = () => {
     //check if the user enter all data or not
     if (currentUser.name && currentUser.email && currentUser.role) {
-      //update all chenged users 
+      //update all chenged users
       const updatedUsers = users.map(user =>
         user.id === currentUser.id ? currentUser : user
       );
@@ -111,7 +123,8 @@ const handleAddUser = () => {
     }
   };
 
-  
+
+ 
   //-----------------------------------------------------------------------------
   // delete method
   const handleDelete = (id:Number) => {
@@ -126,6 +139,7 @@ const handleAddUser = () => {
     <Container className="applications d-flex flex-column">
       <Heading title="Settings" description="View all Settings" />
        <HeadBar title={"Users"} select={true}/>
+
 
       <div className="container py-2 px-2">
         {/* search input and add user button */}
@@ -146,19 +160,21 @@ const handleAddUser = () => {
             </div>
           </div>
 
+
           {/* add user button */}
           <Col xs="auto">
             <Button
               className="btn-custom"
               style={{ border: "none", backgroundColor: "#280559" }}
-              // open the (add new user) window 
-              onClick={() => setShowAddModal(true)} 
+              // open the (add new user) window
+              onClick={() => setShowAddModal(true)}
             >
               <FontAwesomeIcon icon={faPlusCircle} className="me-2" />
               <span className="px-2">Add New User</span>
             </Button>
           </Col>
         </div>
+
 
        {/* users table */}
         <Table striped bordered hover className="text-center">
@@ -194,11 +210,13 @@ const handleAddUser = () => {
         </Table>
       </div>
 
+
       {/* Add New User Window Model*/}
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title style={{color: "#280559" }} className="fs-2">Add New User</Modal.Title>
         </Modal.Header>
+
 
         <Modal.Body>
           <Form style={{color: "#280559" }} className="fs-5">
@@ -244,6 +262,7 @@ const handleAddUser = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
 
       {/* Edit User Window Model*/}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
@@ -294,4 +313,7 @@ const handleAddUser = () => {
   );
 };
 
+
 export default Settings;
+
+
