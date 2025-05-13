@@ -1,0 +1,9 @@
+.link {
+    color: rgb(230, 20, 20);
+    cursor: pointer;
+    /* text-decoration: underline; */
+  }
+  
+  .link:hover {
+    color: #45a049;
+  }

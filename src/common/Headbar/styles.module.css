@@ -24,6 +24,12 @@
   color: #280559;
 }
 .selected::before {
+  color: #280559;
+  position: relative;
+  cursor: pointer;
+}
+
+.headBarText:hover::before{
   content: "";
   position: absolute;
   top: -20px;

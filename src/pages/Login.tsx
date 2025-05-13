@@ -1,11 +1,12 @@
 // import React from 'react'
+import LoginForm from '@/common/LoginForm/LoginForm';
 
-const Login = () => {
+function Login() {
   return (
-    <div>
-      
+    <div className="app">
+      <LoginForm />
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
