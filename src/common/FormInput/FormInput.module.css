@@ -1,5 +1,10 @@
 .input-field {
+<<<<<<< HEAD
   position: relative; /* دي أهم حاجة */
+=======
+  position: relative;
+  /* دي أهم حاجة */
+>>>>>>> main
   width: 100%;
 }
 
@@ -23,12 +28,20 @@
 .icon {
   position: absolute;
   top: 55%;
+<<<<<<< HEAD
   right: 12px; 
+=======
+  right: 12px;
+>>>>>>> main
   transform: translateY(-50%);
   color: #888;
   font-size: 16px;
   pointer-events: none;
+<<<<<<< HEAD
 }
 
 
 
+=======
+}
+>>>>>>> main

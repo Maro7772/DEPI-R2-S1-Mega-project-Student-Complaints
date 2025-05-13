@@ -16,10 +16,26 @@
 .headBarText {
   font-size: 20px;
   font-weight: bold;
+<<<<<<< HEAD
   color: #92929D;
   position: relative;
   cursor: pointer;
 }
+=======
+  color: #92929d;
+  position: relative;
+  cursor: pointer;
+}
+.selected {
+  color: #280559;
+}
+.selected::before {
+  color: #280559;
+  position: relative;
+  cursor: pointer;
+}
+
+>>>>>>> main
 .headBarText:hover::before{
   content: "";
   position: absolute;

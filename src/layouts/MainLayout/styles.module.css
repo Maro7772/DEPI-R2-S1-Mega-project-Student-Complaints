@@ -4,6 +4,10 @@ body {
 }
 .container {
   display: flex;
+<<<<<<< HEAD
+=======
+  height: 100%;
+>>>>>>> main
 }
 
 .right {
