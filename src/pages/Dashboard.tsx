@@ -7,7 +7,7 @@ const Dashboard = () => {
     <div>
       <Heading title="Dashboard" description="view Dashbord">
       </Heading>
-      <AdminDashboard />
+      <StudentDashboard />
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, Image, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import React, { useState } from "react";
 import { Table, Form, InputGroup, Pagination, Dropdown } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FaSpinner } from "react-icons/fa";
 import styles from "./StudentDashboard.module.css";
 
@@ -82,13 +84,41 @@ const ApplicationInfo: React.FC<ApplicationProps> = ({
 };
 
 function StudentDashboard() {
+  const [searchQuery, setSearchQuery] = useState(""); // State for search input
+
+  const applications = [
+    {
+      id: "1",
+      date: "2023-10-01",
+      status: "Pending",
+      remark: "Awaiting documents",
+    },
+    { id: "2", date: "2023-09-20", status: "Completed", remark: "Approved" },
+    {
+      id: "3",
+      date: "2023-08-04",
+      status: "Cancelled",
+      remark: "Rejected by admin",
+    },
+    {
+      id: "4",
+      date: "2023-07-15",
+      status: "Pending",
+      remark: "Awaiting review",
+    },
+  ];
+
+  // Filter applications based on the search query
+  const filteredApplications = applications.filter((app) =>
+    app.status.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <Container className="mx-0 px-5">
       <div className={`${styles.Summary} d-flex flex-row my-2 p-4`}>
         <div
           className={`${styles.Img} d-flex justify-content-center align-items-center m-5`}
         >
-          <span>Profile Image</span>
+          <FontAwesomeIcon icon={faUser} style={{ color: "#000000", width: '20vw', height: '30vh' }} />
         </div>
         <div className={`${styles.Info}`}>
           <p className={`${styles.SectionTitle}`}>Summary</p>
@@ -155,9 +185,14 @@ function StudentDashboard() {
       <div className={`${styles.Applications}`}>
         <div className="container py-4">
           <InputGroup className="mb-3">
-            <Form.Control placeholder="Search for Your Application..." />
+            <Form.Control
+              placeholder="Search by status (e.g., Pending, Completed, Cancelled)"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)} // Update search query
+            />
           </InputGroup>
 
+          {/* Applications Table */}
           <Table responsive>
             <thead className="table-light">
               <tr>
@@ -169,25 +204,15 @@ function StudentDashboard() {
               </tr>
             </thead>
             <tbody>
-              <ApplicationInfo
-                id="1"
-                date="2023-10-01"
-                status="Pending"
-                remark="Awaiting documents"
-              />
-
-              <ApplicationInfo
-                id="2"
-                date="2023-09-20"
-                status="Pending"
-                remark="Awaiting documents"
-              />
-              <ApplicationInfo
-                id="3"
-                date="2023-08-04"
-                status="Pending"
-                remark="Awaiting documents"
-              />
+              {filteredApplications.map((app) => (
+                <ApplicationInfo
+                  key={app.id}
+                  id={app.id}
+                  date={app.date}
+                  status={app.status}
+                  remark={app.remark}
+                />
+              ))}
             </tbody>
           </Table>
         </div>
