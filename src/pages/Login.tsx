@@ -7,10 +7,13 @@ import Checkbox from '@/common/Checkbox/Checkbox';
 import FormInput from '@/common/FormInput/FormInput';
 import Link from '@/common/Link/Link';
 import axios from '@/services/axios';
+import { useDispatch } from 'react-redux';
+import { setUser } from '@/store/users/userSlice';
 
 
 
 function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +32,18 @@ function Login() {
 
       console.log('Login successful:', response.data);
 
+      const { user, accessToken } = response.data;
+      // Save user in redux
+      dispatch(setUser({
+        id: user.id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+      }));
+
+      // Save token
+      localStorage.setItem('token', accessToken);
+
       // To navigate 
       navigate('/complaints');
 
@@ -37,6 +52,9 @@ function Login() {
     }
 
   };
+
+
+
 
   return (
     <div className={styles.container}>

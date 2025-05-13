@@ -1,4 +1,11 @@
-import React from 'react'
+import axios from '@/services/axios';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import styles from '../common/LoginForm/LoginForm.module.css';
+import FormInput from '@/common/FormInput/FormInput';
+import { FaEnvelope } from 'react-icons/fa';
+import Button from '@/common/Button/Buttonsubmit';
+import Link from '@/common/Link/Link';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
