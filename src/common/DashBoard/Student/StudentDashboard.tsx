@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, Button } from "react-bootstrap";
 import React, { useState } from "react";
-import { Table, Form, InputGroup, Pagination, Dropdown } from "react-bootstrap";
+import { Table, Form, InputGroup, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FaSpinner } from "react-icons/fa";
