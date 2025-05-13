@@ -11,6 +11,8 @@ import Login from "@pages/Login";
 import ForgetPassword from "@/pages/ForgetPassword";
 import CodeVerification from "@/pages/CodeVerification";
 import ResetPassword from "@/pages/ResetPassword";
+import ProfilePage from "@/pages/ProfilePage";
+
 
 const router = createBrowserRouter([
   {
@@ -55,6 +57,10 @@ const router = createBrowserRouter([
   {
     path: "ResetPassword",
     Component: ResetPassword
+  },
+  {
+    path:"ProfilePage",
+    Component:ProfilePage
   }
 
 ]);
