@@ -22,7 +22,7 @@ const ForgetPassword = () => {
       console.log('Email sent successfully:', response.data.message);
       
    
-      // localStorage.setItem('resetEmail', email);
+      localStorage.setItem('resetEmail', email);
       
       navigate('/CodeVerification'); 
     } catch (error: any) {
