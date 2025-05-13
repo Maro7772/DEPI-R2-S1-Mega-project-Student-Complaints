@@ -55,3 +55,80 @@ export default tseslint.config({
   },
 })
 ```
+```mermaid
+erDiagram
+    USER {
+        ObjectId _id PK
+        string fullName
+        string email
+        string phoneNumber
+        string passwordHash
+        Role role
+        int enrollmentYear
+        string department
+        Date createdAt
+        Date updatedAt
+    }
+    COMPLAINT {
+        ObjectId _id PK
+        ObjectId student FK
+        Category category
+        string description
+        Status status
+        Date submissionDate
+        Date resolutionDate
+        Date createdAt
+        Date updatedAt
+    }
+    RECOMMENDATION {
+        ObjectId _id PK
+        ObjectId complaint FK
+        Category suggestedCategory
+        string suggestedSolution
+        float confidenceScore
+        Date createdAt
+        Date updatedAt
+    }
+    ATTACHMENT {
+        ObjectId _id PK
+        ObjectId complaint FK
+        string fileUrl
+        Date uploadedAt
+    }
+    FEEDBACK {
+        ObjectId _id PK
+        ObjectId complaint FK
+        int rating
+        string comments
+        Date createdAt
+        Date updatedAt
+    }
+    ESCALATION {
+        ObjectId _id PK
+        ObjectId complaint FK
+        ObjectId escalatedTo FK
+        string escalationReason
+        Date escalationDate
+    }
+    NOTIFICATION {
+        ObjectId _id PK
+        ObjectId user FK
+        string message
+        Date sentAt
+    }
+    REPORT {
+        ObjectId _id PK
+        ObjectId admin FK
+        Date generatedOn
+        ReportType reportType
+        JSON data
+    }
+
+    USER ||--o{ COMPLAINT       : submits
+    COMPLAINT ||--o{ ATTACHMENT   : has
+    COMPLAINT ||--o{ RECOMMENDATION: generates
+    COMPLAINT ||--o{ FEEDBACK     : receives
+    COMPLAINT ||--o{ ESCALATION   : undergoes
+    USER ||--o{ NOTIFICATION     : receives
+    USER ||--o{ REPORT           : generates
+  ```
