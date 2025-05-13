@@ -33,9 +33,7 @@ const ResetPassword = () => {
             placeholder="*********"
             />
    </div>
-      <Button type="submit" text={'Update Password'} onClick={function (): void {
-        throw new Error('Function not implemented.');
-      }}></Button>
+      <Button type="submit" text={'Update Password'} ></Button>
         </div>
     </div>
   )

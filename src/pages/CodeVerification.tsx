@@ -77,7 +77,7 @@ const CodeVerification = () => {
 
 
   </div>
-          <Button  type="submit" text={'create an account'} onClick={handleSubmit}></Button>
+          <Button  type="submit" text={'create an account'} ></Button>
 
      </div>
 </div>     

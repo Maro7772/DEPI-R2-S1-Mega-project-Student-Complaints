@@ -5,7 +5,7 @@ interface IAddComplaintProps {
   show: boolean;
   onHide: () => void;
   addNewComplaintHandler: (
-    data: Omit<IComplaintProps, "id" | "solution">
+    data: Omit<IComplaintProps, "_id" | "solution">
   ) => void;
 }
 const AddComplaint = ({
