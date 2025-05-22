@@ -5,5 +5,5 @@ export default interface IComplaintProps {
   category: string;
   description: string;
   status: string;
-  solution?: string;
+  solution: string;
 }
