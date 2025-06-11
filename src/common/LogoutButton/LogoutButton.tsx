@@ -23,7 +23,7 @@ const LogoutButton: React.FC = () => {
       dispatch(logoutUser());
       
       // Then try to call the logout endpoint
-      await axios.post('api/auth/logout');
+      await axios.post('api/auth/logout', null, { withCredentials: true });
       
       // Navigate to login page
       navigate('/login', { replace: true });
