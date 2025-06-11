@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { FaEnvelope, FaTimesCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import styles from '../common/LoginForm/LoginForm.module.css';
 import FormInput from '@/common/FormInput/FormInput';
 import Checkbox from '@/common/Checkbox/Checkbox';
@@ -10,104 +13,91 @@ import axios from '@/services/axios';
 import { setUser } from '@/store/users/userSlice';
 import { useDispatch } from 'react-redux';
 
-interface FormErrors {
-  fullName?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-}
+const registerSchema = z.object({
+  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  confirmPassword: z.string(),
+  role: z.enum(['student', 'admin']),
+  rememberMe: z.boolean().optional()
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+type RegisterFormData = z.infer<typeof registerSchema>;
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [userType, setUserType] = useState('student');
-  const [rememberMe, setRememberMe] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState<string>('');
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-    
-    // Full name validation
-    if (!fullName) {
-      newErrors.fullName = 'Full name is required';
-    } else if (fullName.length < 2) {
-      newErrors.fullName = 'Full name must be at least 2 characters';
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      role: 'student',
+      rememberMe: false
     }
+  });
 
-    // Email validation
-    if (!email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-
-    // Password validation
-    if (!password) {
-      newErrors.password = 'Password is required';
-    } else if (password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    // Confirm password validation
-    if (!confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmitRegister = async (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    
-    if (!validateForm() || isSubmitting) {
-      return;
-    }
-
+  const onSubmit = async (data: RegisterFormData) => {
+    if (isSubmitting) return;
     setIsSubmitting(true);
+    setApiError(''); // Clear any previous errors
 
     try {
-      const passwordAsString = password.toString();
       const res = await axios.post('/api/auth/signup', {
-        fullName,
-        email,
-        password: passwordAsString,
-        role: userType,
+        fullName: data.fullName,
+        email: data.email,
+        password: data.password,
+        role: data.role,
       });
 
       const { user, accessToken } = res.data;
 
       if (user && accessToken) {
+        if (rememberMe) {
+          localStorage.setItem('token', accessToken);
+        }
+        
+        // Save user data
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Update Redux state
         dispatch(setUser({
           id: user.id,  
           fullName: user.fullName,
           email: user.email,
           role: user.role,
         }));
-      }
 
-      localStorage.setItem('token', accessToken);
-      navigate('/complaints');
+        // Navigate to complaints page
+        navigate('/complaints', { replace: true });
+      }
 
     } catch (error: any) {
       console.error('Registration failed:', error.response?.data?.message || error.message);
-      setErrors({
-        email: error.response?.data?.message || 'Registration failed. Please try again.'
-      });
+      
+      // Handle specific API errors
+      if (error.response?.data?.message) {
+        if (error.response.data.message.includes('already exists')) {
+          setApiError('This email is already registered. Please log in instead.');
+        } else {
+          setApiError(error.response.data.message);
+        }
+      } else {
+        setApiError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const handleBlur = (field: keyof FormErrors) => {
-    validateForm();
   };
 
   return (
@@ -118,75 +108,80 @@ function Register() {
           <p className={styles.subtitle}>Please fill your detail to create your account.</p>
         </div>
 
-        <form onSubmit={handleSubmitRegister}>
+        {apiError && (
+          <div className={styles.errorMessage}>
+            {apiError}
+            {apiError.includes('already exists') && (
+              <div className={styles.loginLink}>
+                <Link 
+                  className={styles.signuplink} 
+                  text="Click here to login" 
+                  onClick={() => navigate('/login')}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formGroup}>
             <FormInput
               label='Full Name'
               type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              onBlur={() => handleBlur('fullName')}
+              {...register('fullName')}
               placeholder="John Doe"
               icon={<FaTimesCircle />}
-              error={errors.fullName}
+              error={errors.fullName?.message}
             />
 
             <FormInput
               label='Email'
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={() => handleBlur('email')}
+              {...register('email')}
               placeholder="youremail@example.com"
               icon={<FaEnvelope />}
-              error={errors.email}
+              error={errors.email?.message}
             />
 
             <FormInput
               label="Password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={() => handleBlur('password')}
+              {...register('password')}
               placeholder="*********"
-              error={errors.password}
+              error={errors.password?.message}
             />
 
             <FormInput
               label="Confirm Password"
               type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              onBlur={() => handleBlur('confirmPassword')}
+              {...register('confirmPassword')}
               placeholder="*********"
-              error={errors.confirmPassword}
+              error={errors.confirmPassword?.message}
             />
 
             <label htmlFor="userType">Role</label>
             <select
               id="userType"
-              value={userType}
-              onChange={(e) => setUserType(e.target.value)}
+              {...register('role')}
               className={styles.selectInput}
             >
               <option value="student">Student</option>
               <option value="admin">Admin</option>
             </select>
           </div>
+          
           <div className={styles.options}>
-          <Checkbox
-            label="Remember Me"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
-          />
+            <Checkbox
+              label="Remember Me"
+              checked={rememberMe}
+              onChange={() => setRememberMe(!rememberMe)}
+            />
           </div>
 
           <Button type="submit" text={isSubmitting ? 'Creating account...' : 'Create an account'}></Button>
 
           <div className={styles.signupText}>
-            Have an account? <Link className={styles.signuplink} text={'Login'} onClick={function (): void {
-              throw new Error('Function not implemented.');
-            }} > </Link>
+            Have an account? <Link className={styles.signuplink} text={'Login'} onClick={() => navigate('/login')} />
           </div>
         </form>
       </div>

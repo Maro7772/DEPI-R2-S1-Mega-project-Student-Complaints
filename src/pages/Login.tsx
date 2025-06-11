@@ -47,6 +47,9 @@ function Login() {
       // Save token first
       localStorage.setItem('token', accessToken);
 
+      localStorage.setItem('user', JSON.stringify(user));
+
+
       // Then update Redux state
       dispatch(setUser({
         id: user.id,

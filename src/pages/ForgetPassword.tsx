@@ -51,7 +51,7 @@ const ForgetPassword = () => {
         </div>
         <Button type="submit" text={'ٌRest Password'}></Button>
         <div className={styles.signupText}>
-          <p>Don't have an account ?</p> <Link className={styles.signuplink} text={'Sign up'} >  </Link>
+          Don't have an account ? <Link className={styles.signuplink} text={'Sign up'} >  </Link>
         </div>
          </form>
       </div>
