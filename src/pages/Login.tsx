@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FaEnvelope } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import styles from '../common/LoginForm/LoginForm.module.css';
@@ -9,32 +8,42 @@ import Link from '@/common/Link/Link';
 import axios from '@/services/axios';
 import { useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/users/userSlice';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useState } from 'react';
 
+const loginSchema = z.object({
+  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+});
 
+type LoginFormData = z.infer<typeof loginSchema>;
 
 function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmitlogin = async (e: { preventDefault: () => void; }) => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange'
+  });
 
-    e.preventDefault();
-
+  const onSubmit = async (data: LoginFormData) => {
     try {
-      const passwordAsString = password.toString();
       const response = await axios.post('/api/auth/login', {
-        email,
-        password: passwordAsString,
+        email: data.email.trim(),
+        password: data.password,
       });
-
-      console.log('Login successful:', response.data);
 
       const { user, accessToken } = response.data;
 
-      // Save user in redux
       dispatch(setUser({
         id: user.id,
         fullName: user.fullName,
@@ -42,70 +51,66 @@ function Login() {
         role: user.role,
       }));
 
-      // Save token
       localStorage.setItem('token', accessToken);
-
-      // To navigate 
       navigate('/complaints');
 
     } catch (error: any) {
       console.error('Login failed:', error.response?.data?.message || error.message);
+      const errorMessage = error.response?.data?.message || 'Invalid email or password';
+      
+      setError('email', { 
+        type: 'manual',
+        message: errorMessage 
+      });
+      setError('password', { 
+        type: 'manual',
+        message: errorMessage 
+      });
     }
-
   };
-
-
-
 
   return (
     <div className={styles.container}>
-
       <div className={styles.formSection}>
-
         <div className={styles.header}>
           <h1 className={styles.title}>Login</h1>
           <p className={styles.subtitle}>Please fill your detail to access your account.</p>
         </div>
 
-
-        {/* *****************   form on submit   ********************* */}
-        <form onSubmit={handleSubmitlogin}>
+        <form onSubmit={handleSubmit(onSubmit)} >
           <div className={styles.formGroup}>
-
             <FormInput
               label='Email'
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
               placeholder="youremail@example.com"
               icon={<FaEnvelope />}
+              error={errors.email?.message}
             />
 
             <FormInput
               label="Password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
               placeholder="*********"
+              error={errors.password?.message}
             />
           </div>
+
           <div className={styles.options}>
             <Checkbox
               label="Remember Me"
               checked={rememberMe}
               onChange={() => setRememberMe(!rememberMe)}
             />
-            <Link text={'Forgot Password?'} onClick={function (): void {
-              throw new Error('Function not implemented.');
-            }} ></Link>
+            <Link text={'Forgot Password?'} onClick={() => { }} />
           </div>
 
-          <Button type="submit" text={'Sign in'} ></Button>
+          <Button type="submit" text={isSubmitting ? 'Signing in...' : 'Sign in'} />
 
           <div className={styles.signupText}>
-            <p>Don't have an account ?</p> <Link className={styles.signuplink} text={'Sign up'} onClick={function (): void {
-              throw new Error('Function not implemented.');
-            }} >  </Link>
+            <p>Don't have an account?</p>
+            <Link className={styles.signuplink} text={'Sign up'} onClick={() => { }} />
           </div>
         </form>
       </div>
@@ -113,7 +118,6 @@ function Login() {
       <div className={styles.imageSection}>
         <img src="/image.png" alt="LogIn logo" className={styles.image} />
       </div>
-
     </div>
   );
 }

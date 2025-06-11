@@ -5,8 +5,12 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuMessageCircleWarning } from "react-icons/lu";
 import styles from "./styles.module.css";
+import { useSelector } from "react-redux";
+import LogoutButton from "@/common/LogoutButton/LogoutButton";
 
 const SideBar = () => {
+  const { id } = useSelector((state: any) => state.user);
+
   return (
     <div className={styles.left}>
       <div className={styles.top}>
@@ -30,9 +34,10 @@ const SideBar = () => {
         </div>
       </div>
       <div className={styles.bottom}>
-        <LoginRegister />
+        {id ? <LogoutButton /> : <LoginRegister />}
       </div>
     </div>
   );
 };
+
 export default SideBar;

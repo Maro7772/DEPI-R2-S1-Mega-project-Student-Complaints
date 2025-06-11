@@ -14,7 +14,6 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  
 }
 .left .menu {
   padding: 10px;
@@ -60,4 +59,10 @@
 }
 .menuItems .bullets .icon {
   font-size: 18px;
+}
+.bottom {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
