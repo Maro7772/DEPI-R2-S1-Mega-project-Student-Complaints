@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import LogoutButton from "@/common/LogoutButton/LogoutButton";
 
 const SideBar = () => {
-  const { id } = useSelector((state: any) => state.user);
+  const { isAuthenticated } = useSelector((state: any) => state.user);
 
   return (
     <div className={styles.left}>
@@ -34,7 +34,7 @@ const SideBar = () => {
         </div>
       </div>
       <div className={styles.bottom}>
-        {id ? <LogoutButton /> : <LoginRegister />}
+        {isAuthenticated ? <LogoutButton /> : <LoginRegister />}
       </div>
     </div>
   );

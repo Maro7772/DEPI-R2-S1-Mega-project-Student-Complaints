@@ -10,8 +10,7 @@ interface LinkProps {
   className?: string;
 }
 
-
-const Link: React.FC<LinkProps> = ({ text }) => {
+const Link: React.FC<LinkProps> = ({ text, className }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -19,14 +18,13 @@ const Link: React.FC<LinkProps> = ({ text }) => {
       navigate('/register');
     } else if (text.toLowerCase().includes('forgot password?')) {
       navigate('/forgotpassword');
-    }
-    else if (text.toLowerCase().includes('login')) {
-      navigate('/Login');
+    } else if (text.toLowerCase().includes('login')) {
+      navigate('/login');
     }
   };
 
   return (
-    <div className={styles.link} onClick={handleClick}>
+    <div className={`${styles.link} ${className || ''}`} onClick={handleClick}>
       {text}
     </div>
   );

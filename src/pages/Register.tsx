@@ -111,7 +111,7 @@ function Register() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles.registerPage}`}>
       <div className={styles.formSection}>
         <div className={styles.header}>
           <h1 className={styles.title}>Registration</h1>
@@ -173,17 +173,18 @@ function Register() {
               <option value="admin">Admin</option>
             </select>
           </div>
-          
+          <div className={styles.options}>
           <Checkbox
             label="Remember Me"
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
           />
+          </div>
 
           <Button type="submit" text={isSubmitting ? 'Creating account...' : 'Create an account'}></Button>
 
           <div className={styles.signupText}>
-            <p>Have an account?</p> <Link className={styles.signuplink} text={'Login'} onClick={function (): void {
+            Have an account? <Link className={styles.signuplink} text={'Login'} onClick={function (): void {
               throw new Error('Function not implemented.');
             }} > </Link>
           </div>

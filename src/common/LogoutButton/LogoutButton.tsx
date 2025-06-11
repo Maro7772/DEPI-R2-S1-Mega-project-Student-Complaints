@@ -18,16 +18,24 @@ const LogoutButton: React.FC = () => {
     setError(null);
     
     try {
-      // Try to call the logout endpoint
-      await axios.post('/api/auth/logout');
+      // First clear local state
+      localStorage.removeItem('token');
+      dispatch(logoutUser());
+      
+      // Then try to call the logout endpoint
+      await axios.post('api/auth/logout');
+      
+      // Navigate to login page
+      navigate('/login', { replace: true });
     } catch (error: any) {
       console.error('Logout failed:', error);
       setError(error.response?.data?.message || 'Failed to logout. Please try again.');
+      
+      // If the server is unreachable, we should still log the user out locally
+      if (!error.response) {
+        navigate('/login', { replace: true });
+      }
     } finally {
-      // Always clear local state and storage, regardless of server response
-      localStorage.removeItem('token');
-      dispatch(logoutUser());
-      navigate('/login');
       setIsLoggingOut(false);
       setIsDialogOpen(false);
     }

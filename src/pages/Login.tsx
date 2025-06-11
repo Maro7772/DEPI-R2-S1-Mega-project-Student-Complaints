@@ -44,6 +44,10 @@ function Login() {
 
       const { user, accessToken } = response.data;
 
+      // Save token first
+      localStorage.setItem('token', accessToken);
+
+      // Then update Redux state
       dispatch(setUser({
         id: user.id,
         fullName: user.fullName,
@@ -51,8 +55,8 @@ function Login() {
         role: user.role,
       }));
 
-      localStorage.setItem('token', accessToken);
-      navigate('/complaints');
+      // Navigate to complaints page
+      navigate('/complaints', { replace: true });
 
     } catch (error: any) {
       console.error('Login failed:', error.response?.data?.message || error.message);
@@ -70,19 +74,19 @@ function Login() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${styles.loginPage}`}>
       <div className={styles.formSection}>
         <div className={styles.header}>
           <h1 className={styles.title}>Login</h1>
-          <p className={styles.subtitle}>Please fill your detail to access your account.</p>
+          <p className={styles.subtitle}>Please enter your details to sign in.</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.formGroup}>
             <FormInput
               label='Email'
               type="email"
-              {...register("email")}
+              {...register('email')}
               placeholder="youremail@example.com"
               icon={<FaEnvelope />}
               error={errors.email?.message}
@@ -91,26 +95,28 @@ function Login() {
             <FormInput
               label="Password"
               type="password"
-              {...register("password")}
+              {...register('password')}
               placeholder="*********"
               error={errors.password?.message}
             />
-          </div>
 
-          <div className={styles.options}>
-            <Checkbox
-              label="Remember Me"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
+            <div className={styles.options}>
+              <Checkbox
+                label="Remember me"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <Link  className={styles.signuplink} text="Forgot password?" />
+            </div>
+
+            <Button
+              type="submit"
+              text={isSubmitting ? 'Signing in...' : 'Sign in'}
             />
-            <Link text={'Forgot Password?'} onClick={() => { }} />
-          </div>
 
-          <Button type="submit" text={isSubmitting ? 'Signing in...' : 'Sign in'} />
-
-          <div className={styles.signupText}>
-            <p>Don't have an account?</p>
-            <Link className={styles.signuplink} text={'Sign up'} onClick={() => { }} />
+            <div className={styles.signupText}>
+              Don't have an account? <Link className={styles.signuplink} text="Sign up" />
+            </div>
           </div>
         </form>
       </div>

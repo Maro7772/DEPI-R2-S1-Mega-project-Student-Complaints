@@ -5,6 +5,7 @@ interface UserState {
   fullName: string | null;
   email: string | null;
   role: string | null;
+  isAuthenticated: boolean;
 }
 
 const initialState: UserState = {
@@ -12,6 +13,7 @@ const initialState: UserState = {
   fullName: null,
   email: null,
   role: null,
+  isAuthenticated: false,
 };
 
 const userSlice = createSlice({
@@ -19,13 +21,17 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<Omit<UserState, 'isAuthenticated'>>) {
-      return { ...action.payload };
+      return { ...action.payload, isAuthenticated: true };
     },
     logoutUser(state) {
-      return { ...initialState };
+      return { ...initialState, isAuthenticated: false };
     },
+    checkAuth(state) {
+      // Since we're using cookies, we don't need to check localStorage
+      return state;
+    }
   },
 });
 
-export const { setUser, logoutUser } = userSlice.actions;
+export const { setUser, logoutUser, checkAuth } = userSlice.actions;
 export default userSlice.reducer;

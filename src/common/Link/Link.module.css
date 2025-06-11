@@ -1,7 +1,7 @@
 .link {
     color: rgb(230, 20, 20);
     cursor: pointer;
-    /* text-decoration: underline; */
+    transition: color 0.2s ease;
   }
   
   .link:hover {
